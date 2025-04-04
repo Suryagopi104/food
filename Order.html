@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Summary</title>
+    <link rel="stylesheet" href="/CSS/order.css">
+</head>
+<body>
+    <h1>Your Order</h1>
+    <div id="order-list"></div>
+    <button onclick="clearOrders()">Clear Order</button>
+
+    <script>
+        function loadOrders() {
+            let orders = JSON.parse(localStorage.getItem("orders")) || [];
+            let orderList = document.getElementById("order-list");
+
+            if (orders.length === 0) {
+                orderList.innerHTML = "<p>No items ordered yet.</p>";
+                return;
+            }
+
+            orders.forEach(order => {
+                let item = document.createElement("div");
+                item.innerHTML = `
+                    <img src="${order.image}" width="100">
+                    <h3>${order.name}</h3>
+                    <p>${order.price}</p>
+                `;
+                orderList.appendChild(item);
+            });
+        }
+
+        function clearOrders() {
+            localStorage.removeItem("orders");
+            location.reload();
+        }
+
+        window.onload = loadOrders;
+    </script>
+</body>
+</html>
